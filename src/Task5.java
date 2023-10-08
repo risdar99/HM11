@@ -1,25 +1,27 @@
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Stream;
-import java.util.stream.Collectors;
 
 public class Task5 {
+    public static <T> String zip(Stream<T> first, Stream<T> second) {
+        Iterator<T> iterFirst = first.iterator();
+        Iterator<T> iterSecond = second.iterator();
 
-    public static <T> Stream<T> zip(Stream<T> first, Stream<T> second) {
-        List<T> filteredList = Stream.concat(first, second)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        List<String> result = new ArrayList<>();
+        while (iterFirst.hasNext() && iterSecond.hasNext()) {
+            result.add(iterFirst.next().toString());
+            result.add(iterSecond.next().toString());
+        }
 
-        return filteredList.stream();
+        return String.join(", ", result);
     }
 
     public static void main(String[] args) {
-        Stream<Integer> firstStream = Stream.of(1, 2, 3, 4);
-        Stream<Integer> secondStream = Stream.of(5, 6, 7, 8, 9);
+        Stream<String> stream1 = Stream.of("a", "b", "c");
+        Stream<String> stream2 = Stream.of("x", "y", "z");
 
-        String result = zip(firstStream, secondStream)
-                .map(Object::toString)
-                .collect(Collectors.joining(", "));
-        System.out.println(result);
+        String zippedResult = zip(stream1, stream2);
+        System.out.println(zippedResult);
     }
 }
